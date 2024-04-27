@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+#    environment:
+#      - PANGEA_INTEL_TOKEN=$PANGEA_INTEL_TOKEN
+#      - PANGEA_DOMAIN=$PANGEA_DOMAIN
+#      - PANGEA_IP_INTEL_TYPE=$PANGEA_IP_INTEL_TYPE
+#      - PANGEA_IP_INTEL_SCORE_THRESHOLD=$PANGEA_IP_INTEL_SCORE_THRESHOLD
+#      - REDIS_URL=$REDIS_URL
+#      - REDIS_PASSWORD=$REDIS_PASSWORD
+#      - REDIS_TTL=$REDIS_TTL
+
+  httpbin:
+    image: kennethreitz/httpbin
+    ports:
+      - "80:80"
+    network_mode: host
+
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+    network_mode: host

@@ -1,1 +1,6 @@
 /krakend-api-gateway/.env
+/spring-api-gateway/.env
+/spring-api-gateway/.gradle
+/spring-api-gateway/build
+/spring-api-gateway/.idea
+/spring-api-gateway/pangea_sdk_logs.json

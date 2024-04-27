@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: spring-boot-starter-pangea-connect-reactive
+  data:
+    redis:
+      connection: redis://localhost:6379
+      connection-timeout: 2000
+  config:
+    activate:
+      on-profile: default
+  cloud:
+    gateway:
+      routes:
+        - id: coauth-core-register-load-routes
+          uri: http://localhost:80
+          predicates:
+            - Path=/**
+pangea:
+  token: ${PANGEA_INTEL_TOKEN}
+  domain: ${PANGEA_DOMAIN}
+  ip-intel:
+    enabled: true
+    type: ${PANGEA_IP_INTEL_TYPE}
+    score-threshold: ${PANGEA_IP_INTEL_SCORE_THRESHOLD}
