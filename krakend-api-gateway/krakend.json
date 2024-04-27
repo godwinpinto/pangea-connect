@@ -1,0 +1,40 @@
+{
+  "$schema": "https://www.krakend.io/schema/v3.json",
+  "version": 3,
+  "extra_config": {
+    "github_com/devopsfaith/krakend-cors": {
+      "exposed_headers": [
+        "Content-Length"
+      ],
+      "allow_origins": [
+        "*"
+      ],
+      "max_age": "12h"
+    },
+    
+    "plugin/http-server": {
+      "name": ["krakend-pangea-connect"],
+      "krakend-pangea-connect": {
+        "enabled": true,
+        "path2": "/any"
+      }
+    }
+  },
+  "endpoints": [
+    {
+      "endpoint": "/get",
+      "backend": [
+        {
+          "url_pattern": "/get",
+          "host": [
+            "http://localhost:80"
+          ]
+        }
+      ]
+    }
+  ],
+  "plugin": {
+    "pattern": ".so",
+    "folder": "/opt/krakend/plugin/"
+  }
+}

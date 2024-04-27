@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  krakend:
+    image: devopsfaith/krakend:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - PANGEA_INTEL_TOKEN=$PANGEA_INTEL_TOKEN
+      - PANGEA_DOMAIN=$PANGEA_DOMAIN
+      - PANGEA_IP_INTEL_TYPE=$PANGEA_IP_INTEL_TYPE
+      - PANGEA_IP_INTEL_SCORE_THRESHOLD=$PANGEA_IP_INTEL_SCORE_THRESHOLD
+      - REDIS_URL=$REDIS_URL
+      - REDIS_PASSWORD=$REDIS_PASSWORD
+      - REDIS_TTL=$REDIS_TTL
+    volumes:
+      - ./krakend.json:/etc/krakend/krakend.json
+      - ./krakend_extra_config:/etc/krakend/krakend_extra_config
+      - ./plugin/krakend-pangea-connect.so:/opt/krakend/plugin/krakend-pangea-connect.so
+    network_mode: host
+    depends_on:
+      - httpbin
+
+  httpbin:
+    image: kennethreitz/httpbin
+    ports:
+      - "80:80"
+    network_mode: host
+
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+    network_mode: host

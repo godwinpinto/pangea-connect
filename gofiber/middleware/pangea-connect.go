@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/go-redis/redis/v8"
@@ -18,7 +17,6 @@ import (
 )
 
 // ipScores is a sync.Map storing the IP addresses and their reputation scores.
-var ipScores sync.Map
 
 // PangeaIpIntel is a middleware function that checks the IP intelligence for incoming requests.
 func New(config Config) fiber.Handler {
@@ -26,9 +24,9 @@ func New(config Config) fiber.Handler {
 	cfg := configDefault(config)
 
 	client := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379", // Redis server address
-		Password: "",               // No password
-		DB:       0,                // Default DB
+		Addr:     cfg.RedisUrl,      // Redis server address
+		Password: cfg.RedisPassword, // No password
+		DB:       0,                 // Default DB
 	})
 
 	// Return new handler
