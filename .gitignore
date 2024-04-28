@@ -10,4 +10,8 @@
 /spring-webflux/build
 /spring-webflux/.idea
 /spring-webflux/pangea_sdk_logs.json
-
+/spring-boot/.env
+/spring-boot/.gradle
+/spring-boot/build
+/spring-boot/.idea
+/spring-boot/pangea_sdk_logs.json
