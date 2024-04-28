@@ -1,0 +1,13 @@
+_format_version: '3.0'
+services:
+- name: http-bin
+  url: http://localhost:80
+  routes:
+  - name: my-route
+    paths:
+    - /
+
+  plugins:
+  - name: pangea-connect
+    config:
+      enabled: 'true'

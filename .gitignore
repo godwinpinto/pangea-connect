@@ -4,3 +4,4 @@
 /spring-api-gateway/build
 /spring-api-gateway/.idea
 /spring-api-gateway/pangea_sdk_logs.json
+/kong-api-gateway/.env

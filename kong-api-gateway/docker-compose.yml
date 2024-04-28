@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  httpbin:
+    image: kennethreitz/httpbin
+    ports:
+      - "80:80"
+    network_mode: host
+
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+    network_mode: host
+
+  kong-service:
+    build: .
+    environment:
+      - KONG_DATABASE=off
+      - KONG_HEADER=my_head
+      - KONG_DECLARATIVE_CONFIG=/kong/config.yml
+      # Plugin configuration      
+      - KONG_PLUGINS=bundled,pangea-connect
+      - KONG_PLUGINSERVER_NAMES=pangea-connect
+      - KONG_PLUGINSERVER_PANGEA_CONNECT_START_CMD=/kong/go-plugins/pangea-connect
+      - KONG_PLUGINSERVER_PANGEA_CONNECT_QUERY_CMD=/kong/go-plugins/pangea-connect -dump
+      - KONG_NGINX_MAIN_ENV=PANGEA_IP_INTEL_TYPE;env PANGEA_INTEL_TOKEN;env PANGEA_DOMAIN;env PANGEA_ENABLED;env PANGEA_IP_INTEL_SCORE_THRESHOLD;env REDIS_URL;env REDIS_PASSWORD;env REDIS_TTL"
+      - PANGEA_INTEL_TOKEN=$PANGEA_INTEL_TOKEN
+      - PANGEA_DOMAIN=$PANGEA_DOMAIN
+      - PANGEA_ENABLED=$PANGEA_ENABLED
+      - PANGEA_IP_INTEL_TYPE=$PANGEA_IP_INTEL_TYPE
+      - PANGEA_IP_INTEL_SCORE_THRESHOLD=$PANGEA_IP_INTEL_SCORE_THRESHOLD
+      - REDIS_URL=$REDIS_URL
+      - REDIS_PASSWORD=$REDIS_PASSWORD
+      - REDIS_TTL=$REDIS_TTL
+
+    volumes:
+      - ./config.yml:/kong/config.yml
+    ports:
+      - '8000:8000'
+      - '8001:8001'
+      - '8443:8443'
+      - '8444:8444'
+    network_mode: host
+    depends_on:
+      - redis
