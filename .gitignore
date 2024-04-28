@@ -5,3 +5,9 @@
 /spring-api-gateway/.idea
 /spring-api-gateway/pangea_sdk_logs.json
 /kong-api-gateway/.env
+/spring-webflux/.env
+/spring-webflux/.gradle
+/spring-webflux/build
+/spring-webflux/.idea
+/spring-webflux/pangea_sdk_logs.json
+
