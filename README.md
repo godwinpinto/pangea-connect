@@ -67,9 +67,6 @@ Below is the roadmap for Connect's collection with Pangea services
 |  Express.js | &check;  | &cross;  | &cross;  | &cross;  |
 |  NestJS    | &cross;  | &cross;  | &cross;  | &cross;  |
 |  Fastify | &cross;  | &cross;  | &cross;  | &cross;  |
-|  Feather.js | &cross;  | &cross;  | &cross;  | &cross;  |
-|  Meteor.js | &cross;  | &cross;  | &cross;  | &cross;  |
-|  Sails | &cross;  | &cross;  | &cross;  | &cross;  |
 
 
 ### Rust Framework Status
@@ -77,7 +74,6 @@ Below is the roadmap for Connect's collection with Pangea services
 |---|---|---|---|---|
 |  Actix-web | &cross;  | &cross;  | &cross;  | &cross;  |
 |  Axum    | &cross;  | &cross;  | &cross;  | &cross;  |
-|  Gloo | &cross;  | &cross;  | &cross;  | &cross;  |
 
 ### Python Framework Status
 |  Framework | IP Intel  | Secure Audit Log | Embargo | File Intel |
