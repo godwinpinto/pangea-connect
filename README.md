@@ -21,7 +21,7 @@ curl --location --request GET 'http://localhost:8080/get' \
 --header 'X-Forwarded-For: 190.28.74.251' \
 --header 'Content-Type: application/json'
 
-# Test for a service which is regular. Fire 2-3 times to verify
+# Test for a service which is regular. Fire 2-3 times to verify, should always result in success response
 curl --location --request GET 'http://localhost:8080/get' \
 --header 'X-Forwarded-For: 190.28.74.252' \
 --header 'Content-Type: application/json'
