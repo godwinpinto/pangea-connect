@@ -1,5 +1,5 @@
 # Connect for Pangea
-A set of middleware plugins / libraries build on pangea to add pangea features to the most popular API frameworks and API gateways
+A set of middleware plugins / libraries build on Pangea to add pangea security to the most popular API frameworks and API gateways thus acting as a drop-in centralized security solution. 
 
 ### Development Pre-requisite
 - Docker with Docker compose
@@ -30,9 +30,10 @@ curl --location --request GET 'http://localhost:8080/get' \
 
 ```
 
-
 ### Roadmap Status
 Below is the roadmap for Connect's collection with Pangea services
+
+> Note: An improved approach could also be to publish the plugins on central packaged registeries for Teams adopting as is usage.
 
 ### Golang Framework Status
 |  Framework | IP Intel  | Secure Audit Log | Embargo | File Intel |
@@ -64,6 +65,21 @@ Below is the roadmap for Connect's collection with Pangea services
 |  Sails | &cross;  | &cross;  | &cross;  | &cross;  |
 
 
+### Rust Framework Status
+|  Framework | IP Intel  | Secure Audit Log | Embargo | File Intel |
+|---|---|---|---|---|
+|  Actix-web | &cross;  | &cross;  | &cross;  | &cross;  |
+|  Axum    | &cross;  | &cross;  | &cross;  | &cross;  |
+|  Gloo | &cross;  | &cross;  | &cross;  | &cross;  |
+
+### Python Framework Status
+|  Framework | IP Intel  | Secure Audit Log | Embargo | File Intel |
+|---|---|---|---|---|
+|  Django | &cross;  | &cross;  | &cross;  | &cross;  |
+|  Flask    | &cross;  | &cross;  | &cross;  | &cross;  |
+|  Fast API | &cross;  | &cross;  | &cross;  | &cross;  |
+
+
 ### API Gateway Status
 |  Platform | IP Intel  | Secure Audit Log | Embargo | File Intel |
 |---|---|---|---|---|
@@ -86,3 +102,10 @@ Below is the roadmap for Connect's collection with Pangea services
 |  Platform | IP Intel  | Secure Audit Log | Embargo | File Intel |
 |---|---|---|---|---|
 |  Nginx | &cross;  | &cross;  | &cross;  | &cross;  |
+
+### Improvement needed in existing plugins
+- Revisiting the solution by comparing other middleware / plugin (doing it right) for each platform / framework
+- Unit Tests, Performance Test, etc
+- Basic development hygience (code comments, code analysis)
+- CI pipelines
+- Extending Connect to other Pangea services that can be centralized and easy to configure
