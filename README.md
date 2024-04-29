@@ -32,6 +32,9 @@ curl --location --request GET 'http://localhost:8080/get' \
 --header 'Content-Type: application/json'
 
 ```
+> Note on testing: Kong works on Port 8000
+
+
 
 ### Roadmap Status
 Below is the roadmap for Connect's collection with Pangea services
