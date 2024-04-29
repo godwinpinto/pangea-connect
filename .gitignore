@@ -20,4 +20,4 @@
 /quarkus/build
 /quarkus/.idea
 /quarkus/pangea_sdk_logs.json
-.env
+/.env
