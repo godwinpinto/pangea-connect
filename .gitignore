@@ -21,3 +21,6 @@
 /quarkus/.idea
 /quarkus/pangea_sdk_logs.json
 /.env
+/expressjs/node_modules
+/expressjs/package-lock.json
+/expressjs/dist

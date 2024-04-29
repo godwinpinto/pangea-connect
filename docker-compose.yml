@@ -9,6 +9,7 @@ services:
 
   redis:
     image: "redis:latest"
+    command: [sh, -c, "rm -f /data/dump.rdb && redis-server"]
     ports:
       - "6379:6379"
     network_mode: host
@@ -150,6 +151,22 @@ services:
 
   quarkus:
     build: ./quarkus
+    environment:
+      - PANGEA_INTEL_TOKEN=$PANGEA_INTEL_TOKEN
+      - PANGEA_DOMAIN=$PANGEA_DOMAIN
+      - PANGEA_IP_INTEL_TYPE=$PANGEA_IP_INTEL_TYPE
+      - PANGEA_IP_INTEL_SCORE_THRESHOLD=$PANGEA_IP_INTEL_SCORE_THRESHOLD
+      - REDIS_URL=$REDIS_URL
+      - REDIS_PASSWORD=$REDIS_PASSWORD
+      - REDIS_TTL=$REDIS_TTL
+    ports:
+      - "8080:8080"
+    network_mode: host
+    depends_on:
+      - redis
+
+  expressjs:
+    build: ./expressjs
     environment:
       - PANGEA_INTEL_TOKEN=$PANGEA_INTEL_TOKEN
       - PANGEA_DOMAIN=$PANGEA_DOMAIN

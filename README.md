@@ -40,6 +40,7 @@ curl --location --request GET 'http://localhost:8080/get' \
 Below is the roadmap for Connect's collection with Pangea services
 
 > Note: An improved approach could also be to publish the plugins on central packaged registeries for Teams adopting as is usage.
+> IP Intel service = IP Reputation
 
 ### Golang Framework Status
 |  Framework | IP Intel  | Secure Audit Log | Embargo | File Intel |
@@ -63,7 +64,7 @@ Below is the roadmap for Connect's collection with Pangea services
 ### NodeJS Framework Status
 |  Framework | IP Intel  | Secure Audit Log | Embargo | File Intel |
 |---|---|---|---|---|
-|  Express.js | &cross;  | &cross;  | &cross;  | &cross;  |
+|  Express.js | &check;  | &cross;  | &cross;  | &cross;  |
 |  NestJS    | &cross;  | &cross;  | &cross;  | &cross;  |
 |  Fastify | &cross;  | &cross;  | &cross;  | &cross;  |
 |  Feather.js | &cross;  | &cross;  | &cross;  | &cross;  |
