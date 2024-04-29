@@ -11,11 +11,11 @@ A set of middleware plugins / libraries build on Pangea to add pangea security t
 git clone https://github.com/godwinpinto/pangea-connect.git 
 cd pangea-connect 
 ```
-3. Setup the environment (.env) file in the root directory with the values from step 1
+3. Setup the environment (rename example.env to .env) file in the root directory with the values from step 1
 4. Use docker compose with folder name to run the respective solution
 
 ```
-docker compose up <folder_name>
+docker compose up redis httpbin <folder_name>
 ```
 
 ### Test:
