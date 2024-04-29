@@ -6,8 +6,13 @@ A set of middleware plugins / libraries build on Pangea to add pangea security t
 
 ### How to run
 1. Visit [Pangea.cloud](https://pangea.cloud) and get Pangea IP Intel token and pangea domain
-2. Setup the environment (.env) file in the root directory with the values from step 1
-3. use docker compose with folder name to run the respective solution
+2. Clone the repo
+```sh
+git clone https://github.com/godwinpinto/pangea-connect.git 
+cd pangea-connect 
+```
+3. Setup the environment (.env) file in the root directory with the values from step 1
+4. Use docker compose with folder name to run the respective solution
 
 ```
 docker compose up <folder_name>
