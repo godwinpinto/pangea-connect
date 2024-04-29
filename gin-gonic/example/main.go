@@ -15,9 +15,9 @@ func main() {
 	r.Use(pangea.PangeaIpIntel())
 
 	//example endpoint
-	r.GET("/ping", func(c *gin.Context) {
+	r.GET("/get", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
+			"message": "Hello World",
 		})
 	})
 
