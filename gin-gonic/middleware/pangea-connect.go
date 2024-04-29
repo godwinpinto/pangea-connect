@@ -3,21 +3,22 @@ package middleware
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
-	"sync"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v8"
 
 	"github.com/pangeacyber/pangea-go/pangea-sdk/v3/pangea"
 	"github.com/pangeacyber/pangea-go/pangea-sdk/v3/service/ip_intel"
 )
 
 // ipScores is a sync.Map storing the IP addresses and their reputation scores.
-var ipScores sync.Map
 
 // PangeaIpIntel is a middleware function that checks the IP intelligence for incoming requests.
 func PangeaIpIntel() gin.HandlerFunc {
@@ -26,6 +27,11 @@ func PangeaIpIntel() gin.HandlerFunc {
 		if ipIntelType == "" {
 			log.Fatal("Unauthorized: No Intel type present")
 		}
+
+		client := redis.NewClient(&redis.Options{
+			Addr: os.Getenv("REDIS_URL"),
+		})
+
 		var ipAddress string
 
 		// Determine the IP address based on the IP intelligence type.
@@ -43,13 +49,13 @@ func PangeaIpIntel() gin.HandlerFunc {
 		if ipAddress != "" {
 			isIpPresentInCache := false
 			// Check if the IP address is already in the cache.
-			//TODO: Redis option for distributed cache
-			if val, exists := ipScores.Load(ipAddress); exists {
+			val, _ := client.Get(context.Background(), ipAddress).Result()
+			if val == "Y" {
 				isIpPresentInCache = true
-				if val.(bool) {
-					c.AbortWithStatus(http.StatusForbidden)
-					return
-				}
+				c.AbortWithStatus(http.StatusForbidden)
+				return
+			} else if val == "N" {
+				isIpPresentInCache = true
 			}
 
 			// If the IP address is not in the cache, fetch its reputation asynchronously.
@@ -93,11 +99,19 @@ func PangeaIpIntel() gin.HandlerFunc {
 							log.Fatalf("Failed to parse PANGEA_SCORE_THRESHOLD: %v", err)
 						}
 						var scoreThreshold = score
+
+						scoreStatus := "N"
 						if resp.Result.Data.Score >= scoreThreshold {
-							ipScores.Store(ip, true)
+							scoreStatus = "Y"
 						} else {
-							ipScores.Store(ip, false)
+							scoreStatus = "N"
 						}
+
+						err = client.Set(context.Background(), ip, scoreStatus, time.Duration(time.Minute*time.Duration(15))).Err()
+						if err != nil {
+							fmt.Println("Failed to set key:", err)
+						}
+
 					}
 				}()
 			}
