@@ -82,7 +82,7 @@ Below is the roadmap for Connect's collection with Pangea services
 |---|---|---|---|---|
 |  Nginx | &cross;  | &cross;  | &cross;  | &cross;  |
 
-### Ingress Gateway
+### Ingress Controller
 |  Platform | IP Intel  | Secure Audit Log | Embargo | File Intel |
 |---|---|---|---|---|
 |  Nginx | &cross;  | &cross;  | &cross;  | &cross;  |
