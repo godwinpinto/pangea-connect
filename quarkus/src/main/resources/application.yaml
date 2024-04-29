@@ -1,0 +1,12 @@
+pangea:
+  token: ${PANGEA_INTEL_TOKEN}
+  domain: ${PANGEA_DOMAIN}
+  ip-intel:
+    enabled: true
+    type: ${PANGEA_IP_INTEL_TYPE}
+    score-threshold: ${PANGEA_IP_INTEL_SCORE_THRESHOLD}
+    redis-ttl: ${REDIS_TTL}
+
+quarkus:
+  redis:
+    hosts=redis://localhost/:6379
