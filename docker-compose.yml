@@ -149,9 +149,7 @@ services:
       - redis
 
   quarkus:
-    build:
-      context: ./quarkus
-      dockerfile: src/main/docker/Dockerfile.${QUARKUS_MODE:-jvm}
+    build: ./quarkus
     environment:
       - PANGEA_INTEL_TOKEN=$PANGEA_INTEL_TOKEN
       - PANGEA_DOMAIN=$PANGEA_DOMAIN

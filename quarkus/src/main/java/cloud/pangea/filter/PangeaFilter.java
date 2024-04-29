@@ -4,17 +4,18 @@ import cloud.pangeacyber.pangea.Config;
 import cloud.pangeacyber.pangea.intel.IPIntelClient;
 import cloud.pangeacyber.pangea.intel.requests.IPReputationRequest;
 import cloud.pangeacyber.pangea.intel.responses.IPReputationResponse;
+import io.quarkus.redis.client.RedisClientName;
 import io.quarkus.redis.datasource.ReactiveRedisDataSource;
 import io.quarkus.redis.datasource.value.ReactiveValueCommands;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.infrastructure.Infrastructure;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.resteasy.reactive.server.ServerRequestFilter;
 
-@ApplicationScoped
 public class PangeaFilter {
 
 
@@ -33,10 +34,9 @@ public class PangeaFilter {
     @ConfigProperty(name = "pangea.ip-intel.type")
     private String ipIntelType;
 
-    private ReactiveValueCommands<String,String> valCommands;
-//    private ValueCommands<String, String> cmd;
-
-    public PangeaFilter(ReactiveRedisDataSource ds) {
+    private final ReactiveValueCommands<String,String> valCommands;
+    public PangeaFilter(@RedisClientName("pangea-cache")
+                            ReactiveRedisDataSource ds) {
         valCommands=ds.value(String.class, String.class);
     }
 
@@ -44,15 +44,14 @@ public class PangeaFilter {
         return valCommands.get(key);
     }
 
-    void setToCache(String key, String value) {
-        System.out.println("Setting cache for key: "+key+" value: "+value);
-        valCommands.setex(key, 15 , value);
+    Uni<Void> setToCache(String key, String value) {
+        return valCommands.setex(key, 15*60 , value);
     }
 
     @ServerRequestFilter(preMatching = true)
-    public Uni<Void> ipIntelFilter(ContainerRequestContext requestContext) {
+    public Uni<Response> ipIntelFilter(ContainerRequestContext requestContext) {
         if (!ipIntelEnabled || ipIntelType == null || ipIntelType.isEmpty()) {
-            return Uni.createFrom().voidItem();
+            return Uni.createFrom().nullItem();
         }
 
         String ipAddress;
@@ -63,6 +62,7 @@ public class PangeaFilter {
         } else {
             ipAddress = "";
         }
+
         return getFromCache(ipAddress)
                 .onItem().transformToUni(isBlocked -> allowOrDenyRequest(requestContext, isBlocked, ipAddress));
 
@@ -77,33 +77,25 @@ public class PangeaFilter {
                 IPReputationResponse response = client.reputation(
                         new IPReputationRequest.Builder(ipAddress).provider("crowdstrike").verbose(true).raw(true).build()
                 );
-                System.out.println(response.getStatus()+"::"+response.getResult().getRawData().toString());
                 if ("success".equalsIgnoreCase(response.getStatus())) {
-                    setToCache(ipAddress, response.getResult().getData().getScore() >= ipIntelThreshold ? "Y" : "N");
+                    return setToCache(ipAddress, response.getResult().getData().getScore() >= ipIntelThreshold ? "Y" : "N");
                 } else {
-                    setToCache(ipAddress, "N");
+                    return setToCache(ipAddress, "N");
                 }
             } catch (Exception ignored) {
             }
-                return Uni.createFrom().voidItem();
+            return Uni.createFrom().voidItem();
         });
     }
 
 
-    private Uni<Void> allowOrDenyRequest(ContainerRequestContext requestContext, String isBlocked, String ipAddress) {
-        System.out.println("isBlocked"+isBlocked);
-        if ("Y".equals(isBlocked)) {
-            requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
-            return Uni.createFrom().voidItem();
-        } else if (isBlocked == null) {
+    private Uni<Response> allowOrDenyRequest(ContainerRequestContext requestContext, String isBlocked, String ipAddress) {
+        if (isBlocked == null) {
             processIpIntel(ipAddress).runSubscriptionOn(Infrastructure.getDefaultWorkerPool())
-                    .subscribeAsCompletionStage().whenComplete((i, e) -> {
-                        System.out.println("IP Intel completed");
-                        if(e != null) {
-                            e.printStackTrace();
-                        }
-                    });;
-            return Uni.createFrom().voidItem();
+                    .subscribeAsCompletionStage().isDone();
+            return Uni.createFrom().nullItem();
+        }else if ("Y".equals(isBlocked)) {
+            return Uni.createFrom().item(Response.status(Response.Status.FORBIDDEN).build());
         } else {
             return Uni.createFrom().nullItem();
         }

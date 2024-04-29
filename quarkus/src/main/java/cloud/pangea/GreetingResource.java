@@ -17,7 +17,7 @@ public class GreetingResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Uni<Response> get()   {
-            return Uni.createFrom().item(Response.status(Response.Status.BAD_REQUEST)
+            return Uni.createFrom().item(Response.ok()
                     .entity(new HelloResponseBean("Hello World")).build());
     }
 }

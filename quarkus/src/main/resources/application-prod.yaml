@@ -12,16 +12,6 @@ quarkus:
     pangea-cache:
       hosts: redis://localhost:6379
 
-
-"%dev":
-  quarkus:
-    redis:
-      pangea-cache:
-        devservices:
-          enabled: true
-          service-name: redis1
-#        hosts: redis://redis1/
-
 "%prod":
   quarkus:
     redis:
