@@ -45,3 +45,59 @@ services:
     depends_on:
       - redis
       - httpbin
+
+  krakend-api-gateway:
+    image: devopsfaith/krakend:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - PANGEA_INTEL_TOKEN=$PANGEA_INTEL_TOKEN
+      - PANGEA_DOMAIN=$PANGEA_DOMAIN
+      - PANGEA_IP_INTEL_TYPE=$PANGEA_IP_INTEL_TYPE
+      - PANGEA_IP_INTEL_SCORE_THRESHOLD=$PANGEA_IP_INTEL_SCORE_THRESHOLD
+      - REDIS_URL=$REDIS_URL
+      - REDIS_PASSWORD=$REDIS_PASSWORD
+      - REDIS_TTL=$REDIS_TTL
+    volumes:
+      - ./krakend-api-gateway/krakend.json:/etc/krakend/krakend.json
+      - ./krakend-api-gateway/krakend_extra_config:/etc/krakend/krakend_extra_config
+      - ./krakend-api-gateway/plugin/krakend-pangea-connect.so:/opt/krakend/plugin/krakend-pangea-connect.so
+    network_mode: host
+    depends_on:
+      - httpbin
+      - redis
+
+  gin-gonic:
+    build: ./gin-gonic
+    environment:
+      - PANGEA_INTEL_TOKEN=$PANGEA_INTEL_TOKEN
+      - PANGEA_DOMAIN=$PANGEA_DOMAIN
+      - PANGEA_IP_INTEL_TYPE=$PANGEA_IP_INTEL_TYPE
+      - PANGEA_IP_INTEL_SCORE_THRESHOLD=$PANGEA_IP_INTEL_SCORE_THRESHOLD
+      - REDIS_URL=$REDIS_URL
+      - REDIS_PASSWORD=$REDIS_PASSWORD
+      - REDIS_TTL=$REDIS_TTL
+    ports:
+      - "8080:8080"
+    network_mode: host
+    depends_on:
+      - httpbin
+      - redis
+
+  gofiber:
+    build: ./gofiber
+    environment:
+      - PANGEA_INTEL_TOKEN=$PANGEA_INTEL_TOKEN
+      - PANGEA_DOMAIN=$PANGEA_DOMAIN
+      - PANGEA_IP_INTEL_TYPE=$PANGEA_IP_INTEL_TYPE
+      - PANGEA_IP_INTEL_SCORE_THRESHOLD=$PANGEA_IP_INTEL_SCORE_THRESHOLD
+      - REDIS_URL=$REDIS_URL
+      - REDIS_PASSWORD=$REDIS_PASSWORD
+      - REDIS_TTL=$REDIS_TTL
+    ports:
+      - "8080:8080"
+    network_mode: host
+    depends_on:
+      - httpbin
+      - redis
+
